@@ -52,7 +52,6 @@ const app = {
   activatePage: function(pageId){
     const thisApp = this;
 
-
     for(let navLink of thisApp.possiblePages){
       navLink = navLink.replace('#','.');
       const pages = document.querySelector(select.pages.section + navLink);
@@ -60,13 +59,28 @@ const app = {
         pages.classList.add(className.pages.active);
       }  
     }
-    
+
     window.location.hash = pageId;
+
+    const links = document.querySelectorAll(select.nav.links);
+    for(let link of links){
+      link.classList.remove(className.nav.active);
+      const hash = link.getAttribute('href');
+      if(hash == pageId){
+        link.classList.add(className.nav.active);
+      }
+    }
+
+    const subscribe = document.querySelector(select.pages.subscribe);
 
     if(pageId == '#home'){
       thisApp.initSongs(); 
+      subscribe.classList.remove(className.pages.active);
     } else if (pageId == '#discovery'){
       thisApp.randomSong();
+      subscribe.classList.add(className.pages.active);
+    } else if (pageId == '#search'){
+      subscribe.classList.add(className.pages.active);
     }
 
     pageId = pageId.replace('#','.');
@@ -103,8 +117,7 @@ const app = {
     
     thisApp.initData();
     thisApp.initPage();
-    thisApp.initSearch(thisApp.data);
-
+    thisApp.initSearch();
   }
 };
 

@@ -11,10 +11,12 @@ export const select = {
   },
   pages: {
     section: 'section',
+    subscribe: '.subscribe',
   },
   form: {
     input: 'input',
     button: '.search-form button',
+    info: '.found h2',
     found: '.found span',
   }
 };
@@ -25,6 +27,9 @@ export const className = {
   },
   nav: {
     active: 'active-link',
+  },
+  form: {
+    visible: 'visible',
   }
 };
 
