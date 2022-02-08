@@ -48,7 +48,6 @@ class SearchWidget{
   initSearch(search){
     const thisWidget = this;
     let find = 0;
-    console.log(search);
     if(search != '' && search.length > 1){
       for(let song in thisWidget.data.songs){
         let filename = thisWidget.data.songs[song].filename;

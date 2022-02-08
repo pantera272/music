@@ -74,7 +74,8 @@ const app = {
     const subscribe = document.querySelector(select.pages.subscribe);
 
     if(pageId == '#home'){
-      thisApp.initSongs(); 
+      console.log('as');
+      thisApp.initSongs();
       subscribe.classList.remove(className.pages.active);
     } else if (pageId == '#discovery'){
       thisApp.randomSong();
@@ -101,6 +102,7 @@ const app = {
       })
       .then(function(parseResponse){
         thisApp.data.songs = parseResponse;
+        thisApp.initSongs();  
       });
   },
 
