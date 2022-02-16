@@ -31,6 +31,8 @@
 
     <!--start home page-->
     <section class="home disable-view">
+      <div class="categories">
+      </div>
     </section>
     <!--end home page-->
 
@@ -42,8 +44,12 @@
       <div class="search-form">
         <label for="saerch">Name</label>
         <input id="search" type="text">
-        <button type="button">Search</button>
+        <label for="category">Category</label>
+        <select id="category">
+
+        </select>
       </div>
+      <button type="button">Search</button>
       <div class="found">
         <h2>We have found <span>0</span> songs...</h2>
         <h2>Please insert 2 symbols</h2>
@@ -101,6 +107,22 @@
         <div class="ranking">#{{ ranking }} in the ranking</div>
       </div>
     </div>
+  </script>
+
+  <script id="template-category" type="text/x-handlebars-template">
+    <ol>
+      <li>Category:</li>
+      {{#each category}}
+      <li><a href="" data-tag="{{this}}" class="">{{this}}</a>,</li>
+      {{/each}}
+    </ol>
+  </script>
+
+  <script id="template-select" type="text/x-handlebars-template">
+    <option></option>
+    {{#each category}}
+    <option value="{{this}}">{{this}}</option>
+    {{/each}}
   </script>
 
   <script src="https://cdn.jsdelivr.net/gh/greghub/green-audio-player/dist/js/green-audio-player.min.js"></script>

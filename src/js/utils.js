@@ -1,3 +1,4 @@
+import { select } from './settings.js';
 const utils = {}; // eslint-disable-line no-unused-vars
 
 utils.createDOMFromHTML = function(htmlString) {
@@ -20,5 +21,10 @@ utils.initGap = function(){
     stopOthersOnPlay: true
   });
 }; 
+
+utils.clearMusicContainer = function(){
+  let containerMusic = document.querySelector(select.containerOf.music);
+  containerMusic.innerHTML = ''; 
+};
 
 export default utils;

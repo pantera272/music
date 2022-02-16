@@ -1,8 +1,9 @@
 // eslint-disable-next-line no-unused-vars
 import Song from './components/Song.js';
-import SearchWidget from './components/searchWidget.js';
+import SearchWidget from './components/SearchWidget.js';
 import { select, className, settings } from './settings.js';
 import utils from './utils.js';
+import CategoryWidget from './components/CategoryWidget.js';
 
 const app = {
   initPage: function(){
@@ -17,8 +18,7 @@ const app = {
     for(let navLink of navLinks){
       navLink.addEventListener('click', function(event){
         event.preventDefault();
-        let containerMusic = document.querySelector(select.containerOf.music);
-        containerMusic.innerHTML = ''; 
+        utils.clearMusicContainer();
         page = this.getAttribute('href');
         thisApp.activatePage(page);
 
@@ -28,10 +28,11 @@ const app = {
     }
 
     const wrongPages = thisApp.possiblePages.indexOf(pageHash);
-
+    const pageHome = '#' + settings.pages.startPage;
     if (pageHash == '' || wrongPages == -1){
-      const page = '#' + settings.pages.startPage;
-      thisApp.activatePage(page);
+      thisApp.activatePage(pageHome);
+    } else if (pageHash == pageHome) {
+      thisApp.activatePage(pageHome);
     }
   },
   
@@ -74,7 +75,6 @@ const app = {
     const subscribe = document.querySelector(select.pages.subscribe);
 
     if(pageId == '#home'){
-      console.log('as');
       thisApp.initSongs();
       subscribe.classList.remove(className.pages.active);
     } else if (pageId == '#discovery'){
@@ -82,6 +82,12 @@ const app = {
       subscribe.classList.add(className.pages.active);
     } else if (pageId == '#search'){
       subscribe.classList.add(className.pages.active);
+      const infos = document.querySelectorAll(select.form.info);
+      for(let info of infos){
+        if(!info.classList.contains(className.form.visible)){
+          info.classList.add(className.form.visible);
+        }
+      }
     }
 
     pageId = pageId.replace('#','.');
@@ -102,16 +108,85 @@ const app = {
       })
       .then(function(parseResponse){
         thisApp.data.songs = parseResponse;
-        thisApp.initSongs();  
+        thisApp.initSongs(); 
+        new CategoryWidget(thisApp.data.songs);
+        thisApp.initSearch(); 
+        thisApp.initDiscovery();
       });
   },
 
   randomSong(){
     const thisApp = this;
-    const songsNumber = thisApp.data.songs.length;
-    const random = Math.floor(Math.random() * songsNumber);
-    new Song(thisApp.data.songs[random]);
-    utils.initGap();
+    if (thisApp.catDiscoveryValue == ''){
+      const songsNumber = thisApp.data.songs.length;
+      const random = Math.floor(Math.random() * songsNumber);
+      new Song(thisApp.data.songs[random]);
+      utils.initGap();
+    } else {
+      let maxNumber = 0;
+      for(let number of thisApp.catDiscoveryValue){
+        if(maxNumber < number){
+          maxNumber = number;
+        }
+      }
+      // eslint-disable-next-line no-unused-vars
+      let cat = thisApp.catDiscoveryValue.indexOf(maxNumber);
+      cat = thisApp.catDiscovery[cat];
+      let data = [];
+
+      for(let song in thisApp.data.songs){
+        for(let category in thisApp.data.songs[song].categories){
+          const match = thisApp.data.songs[song].categories[category].indexOf(cat);
+
+          if (match != -1){
+            data.push(song);
+          }
+        }    
+      }
+
+      const random = Math.floor(Math.random()*data.length);
+      new Song(thisApp.data.songs[data[random]]);
+      utils.initGap();
+    } 
+  },
+
+  initDiscovery(){
+    // eslint-disable-next-line no-unused-vars
+    const thisApp = this;
+    thisApp.catDiscovery = [];
+    thisApp.catDiscoveryValue = [];
+
+    const playButtons = document.querySelectorAll(select.containerOf.music);
+    
+    for(let playButton of playButtons){
+      playButton.addEventListener('click',function(event){
+        const file = event.target;
+        const classBtn = file.classList.contains(select.player.playIcon);
+        if (classBtn){
+          const player = file.closest(select.player.player);
+          
+          let isPlay = player.querySelector(select.player.playBtn);
+          isPlay = isPlay.getAttribute(select.player.aria);
+
+          if(isPlay == 'Pause'){
+            let description = player.querySelector(select.player.category);
+            description = description.innerHTML;
+            description = description.replace('Categories: ','');
+            description = description.split(', ');
+            for(let des of description){
+              const isCategory = thisApp.catDiscovery.indexOf(des);
+              if(isCategory == -1){
+                thisApp.catDiscovery.push(des);
+                thisApp.catDiscoveryValue.push(1);
+              } else {
+                thisApp.catDiscoveryValue[isCategory]++;
+              }
+            }
+          } 
+        }
+      });
+    }
+    
   },
 
   init: function(){
@@ -119,7 +194,7 @@ const app = {
     
     thisApp.initData();
     thisApp.initPage();
-    thisApp.initSearch();
+     
   }
 };
 

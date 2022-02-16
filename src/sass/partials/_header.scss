@@ -6,6 +6,7 @@
     background-size: cover;
     background-color: $color-4;
     position: relative;
+    min-height: 500px;
 
     .hero-gradient{      
       width: 100%;
@@ -33,5 +34,28 @@
     line-height: 46px;
     font-weight: $font-black;
     letter-spacing: 15px;
+  }
+}
+
+@media only screen and (max-width: 1000px){
+  .hero{
+    h1{
+      font-size: 100px;
+      letter-spacing: 95px;
+    }
+  }
+}
+
+@media only screen and (max-width: 800px){
+  .hero{
+    h1{
+      font-size: 60px;
+      letter-spacing: 50px;
+    }
+
+    h2{
+      font-size: 20px;
+      letter-spacing: 10px;
+    }
   }
 }

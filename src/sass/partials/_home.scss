@@ -20,7 +20,7 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: $font-regular;
 
     .category{
@@ -30,5 +30,33 @@
     .ranking{
       margin-right: 10px;
     }
+  }
+}
+
+.categories {
+  margin-top: 30px;
+
+  ol{
+    list-style-type: none;
+
+    li{
+      font-size: 16px;
+      display: inline-block;
+      letter-spacing: 3px;
+      font-weight: $font-semibold;
+    } 
+  }
+
+  a{
+    text-decoration: none;
+    color: $color-2;
+    letter-spacing: 3px;
+    font-weight: $font-regular;
+    margin-left: 10px;
+  }
+
+  .active-category{
+    color: $color-1;
+    font-weight: $font-bold;
   }
 }

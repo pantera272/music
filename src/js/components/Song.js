@@ -36,14 +36,22 @@ class Song{
     author = author.trim();
     //end find author
 
+    let categoryText = '';
+    for(let category in thisSong.data.categories){
+      categoryText = categoryText + '&' + thisSong.data.categories[category];
+    }
+
+    categoryText = categoryText.replace('&','');
+    categoryText = categoryText.replace('&',', ');
+
     thisSong.info = {};
     thisSong.info.source = thisSong.data.filename;
     thisSong.info.author = author;
     thisSong.info.title = title;
-    thisSong.info.categories = thisSong.data.categories;
+    thisSong.info.categories = categoryText;
     thisSong.info.ranking = thisSong.data.ranking;
-  }
-  
+
+  } 
 }
 
 export default Song;
